@@ -35,6 +35,16 @@ public class PlayerArea : MonoBehaviour
         // Check if the collided object has the tag "Tiny"
         if (collidedObject.CompareTag("Tiny"))
         {
+            // Check if the parent of the colliding object is tagged as "Player" or "Enemy"
+            if (collidedObject.GetComponent<TinyOwnerReference>().owner == null)
+            {
+                Debug.Log("OWNER IS NULL");
+                GameObject parent = this.transform.parent?.gameObject;
+                if (parent != null && (parent.CompareTag("Player") || parent.CompareTag("Enemy")))
+                {
+                    collidedObject.GetComponent<TinyOwnerReference>().owner = parent;
+                }
+            }
             // Find the first childless GameObject
             GameObject firstChildlessGameObject = GetFirstChildlessGameObject();
 
