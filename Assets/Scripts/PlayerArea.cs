@@ -28,42 +28,5 @@ public class PlayerArea : MonoBehaviour
         return null; // Return null if no childless GameObject is found
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        GameObject collidedObject = collision.gameObject;
-
-        // Check if the collided object has the tag "Tiny"
-        if (collidedObject.CompareTag("Tiny"))
-        {
-            // Check if the parent of the colliding object is tagged as "Player" or "Enemy"
-            if (collidedObject.GetComponent<TinyOwnerReference>().owner == null)
-            {
-                Debug.Log("OWNER IS NULL");
-                GameObject parent = this.transform.parent?.gameObject;
-                if (parent != null && (parent.CompareTag("Player") || parent.CompareTag("Enemy")))
-                {
-                    collidedObject.GetComponent<TinyOwnerReference>().owner = parent;
-                }
-            }
-            // Find the first childless GameObject
-            GameObject firstChildlessGameObject = GetFirstChildlessGameObject();
-
-            if (firstChildlessGameObject != null)
-            {
-                // Set the collided object as a child of the first childless GameObject
-                collidedObject.transform.SetParent(firstChildlessGameObject.transform);
-
-                // Reset the transform of the collided object
-                collidedObject.transform.localPosition = new Vector3(0, 0, -24);
-                collidedObject.transform.localRotation = Quaternion.identity;
-                collidedObject.transform.localScale = Vector3.one;
-
-                collidedObject.GetComponent<SpriteRenderer>().color = Color.red;
-            }
-            else
-            {
-                Debug.LogWarning("No childless GameObject available to parent the collided object.");
-            }
-        }
-    }
+    
 }
