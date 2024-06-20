@@ -10,7 +10,7 @@ public class PlayerAreaTargeting : MonoBehaviour
 
     private float fireInterval = 1.0f;
     private float nextFireTime = 0.0f;
-
+  
     void OnTriggerStay2D(Collider2D collision)
     {
         // Clear the list before adding new positions
@@ -20,14 +20,12 @@ public class PlayerAreaTargeting : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, transform.localScale / 2, 0f);
         foreach (Collider2D collider in colliders)
         {
-            Debug.Log("THERE IS AN ITEM COLLIDING");
             if (collider.CompareTag("Tiny"))
             {
                 TinyOwnerReference ownerRef = collider.GetComponent<TinyOwnerReference>();
                 if (ownerRef != null && ownerRef.owner != null && ownerRef.owner != this.gameObject.transform.parent.gameObject)
                 {
                     tinyPositions.Add(collider.transform.position);
-                    Debug.Log(collider.transform.position);
                 }
             }
         }
