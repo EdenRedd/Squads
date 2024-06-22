@@ -170,6 +170,9 @@ namespace MoreMountains.TopDownEngine
 		protected RaycastHit _canGoBackHeadCheck;
 		protected bool _tooSteepLastFrame;
 
+		public Quaternion MoveWithPlatformGlobalRotation => _moveWithPlatformGlobalRotation;
+		public Quaternion MoveWithPlatformRotationDiff => _moveWithPlatformRotationDiff;
+
 		/// <summary>
 		/// On awake we store our various components for future use
 		/// </summary>
@@ -325,11 +328,11 @@ namespace MoreMountains.TopDownEngine
 				}
 				_moveWithPlatformGlobalRotation = _movingPlatformCurrentHitCollider.rotation * _movingPlatformLocalRotation;
 				_moveWithPlatformRotationDiff = _moveWithPlatformGlobalRotation * Quaternion.Inverse(_movingPlatformGlobalRotation);
-				float yRotation = _moveWithPlatformRotationDiff.eulerAngles.y;
+				/*float yRotation = _moveWithPlatformRotationDiff.eulerAngles.y;
 				if (yRotation != 0)
 				{
 					_transform.Rotate(0, yRotation, 0);
-				}
+				}*/
 			}
 		}
 
@@ -416,6 +419,7 @@ namespace MoreMountains.TopDownEngine
 
 			if (ShouldMoveWithPlatformThisFrame())
 			{
+				_movingPlatformCurrentGlobalPoint = _transform.position;
 				_movingPlatformCurrentHitColliderLocal = _movingPlatformCurrentHitCollider.InverseTransformPoint(_movingPlatformCurrentGlobalPoint);
 				_movingPlatformGlobalRotation = _transform.rotation;
 				_movingPlatformLocalRotation = Quaternion.Inverse(_movingPlatformCurrentHitCollider.rotation) * _movingPlatformGlobalRotation;

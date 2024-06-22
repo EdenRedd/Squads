@@ -30,7 +30,7 @@ namespace MoreMountains.TopDownEngine
 		[Header("Camera Speed")]
 		/// the speed at which the camera should rotate
 		[Tooltip("the speed at which the camera should rotate")]
-		public float CameraRotationSpeed = 3f;
+		public float CameraRotationSpeed = 1f;
 		/// the speed at which the camera should interpolate towards its target position
 		[Tooltip("the speed at which the camera should interpolate towards its target position")]
 		public float CameraInterpolationSpeed = 0.2f;
@@ -112,7 +112,7 @@ namespace MoreMountains.TopDownEngine
 			{
 				return;
 			}
-			_requestedCameraAngle = _inputManager.CameraRotationInput * CameraRotationSpeed;
+			_requestedCameraAngle = _inputManager.CameraRotationInput * CameraRotationSpeed * Time.deltaTime * 100f;
 		}
 
 		/// <summary>

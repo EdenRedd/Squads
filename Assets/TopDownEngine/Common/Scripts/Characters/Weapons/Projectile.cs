@@ -104,7 +104,10 @@ namespace MoreMountains.TopDownEngine
 			if (_weapon == null) { yield break; }
 
 			_damageOnTouch.ClearIgnoreList();
-			_damageOnTouch.IgnoreGameObject(_weapon.Owner.gameObject);
+			if (_weapon.Owner != null)
+			{
+				_damageOnTouch.IgnoreGameObject(_weapon.Owner.gameObject);	
+			}
 			yield return _initialInvulnerabilityDurationWFS;
 			if (DamageOwner)
 			{

@@ -19,7 +19,7 @@ namespace MoreMountains.TopDownEngine
 		public enum ButtonActivatedRequirements { Character, ButtonActivator, Either, None }
 		public enum InputTypes { Default, Button, Key }
 
-		[Header("Requirements")]
+		[MMInspectorGroup("Requirements", true, 10)]
 		[MMInformation("Here you can specify what is needed for something to interact with this zone. Does it require the ButtonActivation character ability? Can it only be interacted with by the Player? ", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
 		/// if this is true, objects with a ButtonActivator class will be able to interact with this zone
 		[Tooltip("if this is true, objects with a ButtonActivator class will be able to interact with this zone")]
@@ -31,7 +31,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("if this is true, this zone can only be activated if the character has the required ability")]
 		public bool RequiresButtonActivationAbility = true;
         
-		[Header("Activation Conditions")]
+		[MMInspectorGroup("Activation Conditions", true, 11)]
 
 		[MMInformation("Here you can specific how that zone is interacted with. You can have it auto activate, activate only when grounded, or prevent its activation altogether.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
 		/// if this is false, the zone won't be activable 
@@ -51,6 +51,8 @@ namespace MoreMountains.TopDownEngine
 		/// if this is set to false, the zone won't be activable while not grounded
 		[Tooltip("if this is set to false, the zone won't be activable while not grounded")]
 		public bool CanOnlyActivateIfGrounded = false;
+		
+		
 		/// Set this to true if you want the CharacterBehaviorState to be notified of the player's entry into the zone.
 		[Tooltip("Set this to true if you want the CharacterBehaviorState to be notified of the player's entry into the zone.")]
 		public bool ShouldUpdateState = true;
@@ -61,7 +63,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("a layermask with all the layers that can interact with this specific button activated zone")]
 		public LayerMask TargetLayerMask = ~0;
 
-		[Header("Number of Activations")]
+		[MMInspectorGroup("Number of Activations", true, 12)]
 
 		[MMInformation("You can decide to have that zone be interactable forever, or just a limited number of times, and can specify a delay between uses (in seconds).",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
 		/// if this is set to false, your number of activations will be MaxNumberOfActivations
@@ -70,6 +72,10 @@ namespace MoreMountains.TopDownEngine
 		/// the number of times the zone can be interacted with
 		[Tooltip("the number of times the zone can be interacted with")]
 		public int MaxNumberOfActivations = 0;
+		/// the amount of remaining activations on this zone
+		[Tooltip("the amount of remaining activations on this zone")]
+		[MMReadOnly]
+		public int NumberOfActivationsLeft;
 		/// the delay (in seconds) after an activation during which the zone can't be activated
 		[Tooltip("the delay (in seconds) after an activation during which the zone can't be activated")]
 		public float DelayBetweenUses = 0f;
@@ -77,7 +83,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("if this is true, the zone will disable itself (forever or until you manually reactivate it) after its last use")]
 		public bool DisableAfterUse = false;
 
-		[Header("Input")]
+		[MMInspectorGroup("Input", true, 13)]
 
 		/// the selected input type (default, button or key)
 		[Tooltip("the selected input type (default, button or key)")]
@@ -101,13 +107,13 @@ namespace MoreMountains.TopDownEngine
 			public KeyCode InputKey = KeyCode.Space;
 		#endif
 
-		[Header("Animation")]
+		[MMInspectorGroup("Animation", true, 14)]
 
 		/// an (absolutely optional) animation parameter that can be triggered on the character when activating the zone	
 		[Tooltip("an (absolutely optional) animation parameter that can be triggered on the character when activating the zone	")]
 		public string AnimationTriggerParameterName;
 
-		[Header("Visual Prompt")]
+		[MMInspectorGroup("Visual Prompt", true, 15)]
 
 		[MMInformation("You can have this zone show a visual prompt to indicate to the player that it's interactable.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
 		/// if this is true, a prompt will be shown if setup properly
@@ -150,7 +156,8 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the rotation of the actual buttonA prompt ")]
 		public Vector3 PromptRotation = Vector3.zero;
 
-		[Header("Feedbacks")]
+		[MMInspectorGroup("Feedbacks", true, 16)]
+		
 		/// a feedback to play when the zone gets activated
 		[Tooltip("a feedback to play when the zone gets activated")]
 		public MMFeedbacks ActivationFeedback;
@@ -164,7 +171,8 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("a feedback to play when the zone gets exited	")]
 		public MMFeedbacks ExitFeedback;
 
-		[Header("Actions")]
+		[MMInspectorGroup("Actions", true, 17)]
+		
 		/// a UnityEvent to trigger when this zone gets activated
 		[Tooltip("a UnityEvent to trigger when this zone gets activated")]
 		public UnityEvent OnActivation;
@@ -181,7 +189,6 @@ namespace MoreMountains.TopDownEngine
 		protected Collider2D _collider2D;
 		protected bool _promptHiddenForever = false;
 		protected CharacterButtonActivation _characterButtonActivation;
-		protected int _numberOfActivationsLeft;
 		protected float _lastActivationTimestamp;
 		protected List<GameObject> _collidingObjects;
 		protected Character _currentCharacter;
@@ -217,7 +224,7 @@ namespace MoreMountains.TopDownEngine
 		{
 			_collider = this.gameObject.GetComponent<Collider>();
 			_collider2D = this.gameObject.GetComponent<Collider2D>();
-			_numberOfActivationsLeft = MaxNumberOfActivations;
+			NumberOfActivationsLeft = MaxNumberOfActivations;
 			_collidingObjects = new List<GameObject>();
 
 			ActivationFeedback?.Initialization(this.gameObject);
@@ -338,9 +345,9 @@ namespace MoreMountains.TopDownEngine
 				_promptHiddenForever = true;
 				HidePrompt();	
 			}	
-			_numberOfActivationsLeft--;
+			NumberOfActivationsLeft--;
 
-			if (DisableAfterUse && (_numberOfActivationsLeft <= 0))
+			if (DisableAfterUse && (NumberOfActivationsLeft <= 0))
 			{
 				DisableZone();
 			}
@@ -627,12 +634,12 @@ namespace MoreMountains.TopDownEngine
 				return true;
 			}
 
-			if (_numberOfActivationsLeft == 0)
+			if (NumberOfActivationsLeft == 0)
 			{
 				return false;
 			}
 
-			if (_numberOfActivationsLeft > 0)
+			if (NumberOfActivationsLeft > 0)
 			{
 				return true;
 			}
@@ -694,10 +701,17 @@ namespace MoreMountains.TopDownEngine
 			{
 				CharacterButtonActivation characterButtonActivation = collider.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
 				// we check that the object colliding with the water is actually a TopDown controller and a character
-				if (characterButtonActivation==null)
+				if (characterButtonActivation == null)
 				{
 					return false;	
-				}					
+				}
+				else
+				{
+					if (!characterButtonActivation.AbilityAuthorized)
+					{
+						return false;
+					}
+				}
 			}
 
 			return true;

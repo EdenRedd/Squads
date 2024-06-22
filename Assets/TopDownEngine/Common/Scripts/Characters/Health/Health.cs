@@ -460,7 +460,7 @@ namespace MoreMountains.TopDownEngine
 			}
             
 			// we trigger a damage taken event
-			MMDamageTakenEvent.Trigger(this, instigator, CurrentHealth, damage, previousHealth);
+			MMDamageTakenEvent.Trigger(this, instigator, CurrentHealth, damage, previousHealth, typedDamages);
 
 			// we update our animator
 			if (TargetAnimator != null)

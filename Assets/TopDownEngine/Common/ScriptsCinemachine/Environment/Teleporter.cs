@@ -19,7 +19,7 @@ namespace MoreMountains.TopDownEngine
 		/// the possible time modes 
 		public enum TimeModes { Unscaled, Scaled }
 
-		[Header("Teleporter")]
+		[MMInspectorGroup("Teleporter", true, 18)]
 
 		/// if true, this won't teleport non player characters
 		[Tooltip("if true, this won't teleport non player characters")]
@@ -44,7 +44,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("whether or not to maintain the z value of the teleported object on exit")]
 		public bool MaintainZEntryPositionOnExit = false;
 
-		[Header("Destination")]
+		[MMInspectorGroup("Destination", true, 19)]
 
 		/// the teleporter's destination
 		[Tooltip("the teleporter's destination")]
@@ -54,7 +54,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("if this is true, the teleported object will be put on the destination's ignore list, to prevent immediate re-entry. If your destination's offset is far enough from its center, you can set that to false")]
 		public bool AddToDestinationIgnoreList = true;
 
-		[Header("Rooms")]
+		[MMInspectorGroup("Rooms", true, 20)]
 
 		/// the chosen camera mode
 		[Tooltip("the chosen camera mode")]
@@ -66,7 +66,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the target room")]
 		public Room TargetRoom;
         
-		[Header("MMFader Transition")]
+		[MMInspectorGroup("MMFader Transtitions", true, 21)]
 
 		/// if this is true, a fade to black will occur when teleporting
 		[Tooltip("if this is true, a fade to black will occur when teleporting")]
@@ -82,7 +82,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("if this is true, fade events will ignore timescale")]
 		public bool FadeIgnoresTimescale = false;
 
-		[Header("Mask")]
+		[MMInspectorGroup("Mask", true, 22)]
 
 		/// whether or not we should ask to move a MMSpriteMask on activation
 		[Tooltip("whether or not we should ask to move a MMSpriteMask on activation")]
@@ -100,7 +100,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the duration of the mask movement (usually the same as the DelayBetweenFades")]
 		public float MoveMaskDuration = 0.2f;
 
-		[Header("Freeze")]
+		[MMInspectorGroup("Freeze", true, 23)]
 		/// whether or not time should be frozen during the transition
 		[Tooltip("whether or not time should be frozen during the transition")]
 		public bool FreezeTime = false;
@@ -108,7 +108,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("whether or not the character should be frozen (input blocked) for the duration of the transition")]
 		public bool FreezeCharacter = true;
 
-		[Header("Teleport Sequence")]
+		[MMInspectorGroup("Teleport Sequence", true, 24)]
 		/// the timescale to use for the teleport sequence
 		[Tooltip("the timescale to use for the teleport sequence")]
 		public TimeModes TimeMode = TimeModes.Unscaled;

@@ -51,7 +51,7 @@ namespace MoreMountains.TopDownEngine
 				RunStart();
 			}
 
-			if (_movement.CurrentState == CharacterStates.MovementStates.Running)
+			if (_runningStarted)
 			{
 				if (_inputManager.RunButton.IsUp || _inputManager.RunButton.IsOff)
 				{
@@ -93,6 +93,7 @@ namespace MoreMountains.TopDownEngine
 			{
 				PlayAbilityUsedSfx();
 			}
+			
 			// if we're running and not grounded, we change our state to Falling
 			if (!_controller.Grounded
 			    && (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
@@ -102,6 +103,7 @@ namespace MoreMountains.TopDownEngine
 				StopFeedbacks();
 				StopSfx ();
 			}
+			
 			// if we're not moving fast enough, we go back to idle
 			if ((Mathf.Abs(_controller.CurrentMovement.magnitude) < RunSpeed / 10) && (_movement.CurrentState == CharacterStates.MovementStates.Running))
 			{
@@ -109,6 +111,7 @@ namespace MoreMountains.TopDownEngine
 				StopFeedbacks();
 				StopSfx ();
 			}
+			
 			if (!_controller.Grounded && _abilityInProgressSfx != null)
 			{
 				StopFeedbacks();

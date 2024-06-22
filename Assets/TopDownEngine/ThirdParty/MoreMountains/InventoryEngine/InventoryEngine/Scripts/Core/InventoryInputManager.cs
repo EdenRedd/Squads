@@ -525,14 +525,20 @@ namespace MoreMountains.InventoryEngine
 			{
 				if (CurrentlySelectedInventorySlot != null)
 				{
-					CurrentlySelectedInventorySlot.Move();
+					if (CurrentlySelectedInventorySlot.CurrentItem != null && CurrentlySelectedInventorySlot.CurrentItem.DisplayProperties.AllowMoveShortcut)
+					{
+						CurrentlySelectedInventorySlot.Move();
+					}
 				}
 			}
 
 			// equip or use
 			if (_equipOrUseKeyPressed)
 			{
-				EquipOrUse();
+				if (CurrentlySelectedInventorySlot.CurrentItem != null && CurrentlySelectedInventorySlot.CurrentItem.DisplayProperties.AllowEquipUseShortcut)
+				{
+					EquipOrUse();
+				}
 			}
 
 			// equip
@@ -540,7 +546,10 @@ namespace MoreMountains.InventoryEngine
 			{
 				if (CurrentlySelectedInventorySlot != null)
 				{
-					CurrentlySelectedInventorySlot.Equip();
+					if (CurrentlySelectedInventorySlot.CurrentItem != null && CurrentlySelectedInventorySlot.CurrentItem.DisplayProperties.AllowEquipShortcut)
+					{
+						CurrentlySelectedInventorySlot.Equip();
+					}
 				}
 			}
 
@@ -549,7 +558,10 @@ namespace MoreMountains.InventoryEngine
 			{
 				if (CurrentlySelectedInventorySlot != null)
 				{
-					CurrentlySelectedInventorySlot.Use();
+					if (CurrentlySelectedInventorySlot.CurrentItem != null && CurrentlySelectedInventorySlot.CurrentItem.DisplayProperties.AllowUseShortcut)
+					{
+						CurrentlySelectedInventorySlot.Use();
+					}
 				}
 			}
 
@@ -558,7 +570,10 @@ namespace MoreMountains.InventoryEngine
 			{
 				if (CurrentlySelectedInventorySlot != null)
 				{
-					CurrentlySelectedInventorySlot.Drop();
+					if (CurrentlySelectedInventorySlot.CurrentItem != null && CurrentlySelectedInventorySlot.CurrentItem.DisplayProperties.AllowDropShortcut)
+					{
+						CurrentlySelectedInventorySlot.Drop();
+					}
 				}
 			}
 		}

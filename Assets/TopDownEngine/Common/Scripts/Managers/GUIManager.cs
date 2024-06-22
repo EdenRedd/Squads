@@ -23,7 +23,7 @@ namespace MoreMountains.TopDownEngine
 		public MMProgressBar[] HealthBars;
 		/// the dash bars to update
 		[Tooltip("the dash bars to update")]
-		public MMRadialProgressBar[] DashBars;
+		public MMProgressBar[] DashBars;
 		/// the panels and bars used to display current weapon ammo
 		[Tooltip("the panels and bars used to display current weapon ammo")]
 		public AmmoDisplay[] AmmoDisplays;
@@ -219,7 +219,7 @@ namespace MoreMountains.TopDownEngine
 				return;
 			}
 
-			foreach (MMRadialProgressBar jetpackBar in DashBars)
+			foreach (MMProgressBar jetpackBar in DashBars)
 			{
 				if (jetpackBar != null)
 				{ 
@@ -303,7 +303,7 @@ namespace MoreMountains.TopDownEngine
 				return;
 			}
 
-			foreach (MMRadialProgressBar dashbar in DashBars)
+			foreach (MMProgressBar dashbar in DashBars)
 			{
 				if (dashbar == null) { return; }
 				if (dashbar.PlayerID == playerID)

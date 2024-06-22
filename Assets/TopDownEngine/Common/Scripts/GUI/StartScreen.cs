@@ -16,6 +16,10 @@ namespace MoreMountains.TopDownEngine
 		/// the level to load after the start screen
 		[Tooltip("the level to load after the start screen")]
 		public string NextLevel;
+		public enum LoadingSceneModes { Regular, Additive}
+		/// whether to load the scene normally or additively
+		[Tooltip("whether to load the scene normally or additively")]
+		public LoadingSceneModes LoadingSceneMode = LoadingSceneModes.Regular;
 		/// the name of the MMSceneLoadingManager scene you want to use
 		[Tooltip("the name of the MMSceneLoadingManager scene you want to use")]
 		public string LoadingSceneName = "";
@@ -111,7 +115,16 @@ namespace MoreMountains.TopDownEngine
 			}
 			else
 			{
-				MMSceneLoadingManager.LoadScene (NextLevel, LoadingSceneName);
+				if (LoadingSceneMode == LoadingSceneModes.Additive)
+				{
+					MMAdditiveSceneLoadingManagerSettings settings = new MMAdditiveSceneLoadingManagerSettings();
+					settings.LoadingSceneName = LoadingSceneName;
+					MMAdditiveSceneLoadingManager.LoadScene(NextLevel, settings);	
+				}
+				else
+				{
+					MMSceneLoadingManager.LoadScene (NextLevel, LoadingSceneName);
+				}
 			}
 			
 		}

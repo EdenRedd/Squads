@@ -16,7 +16,7 @@ namespace MoreMountains.TopDownEngine
 	{
 		public enum AimCenters { Owner, Weapon }
 		
-		[Header("3D")] 
+		[MMInspectorGroup("3D", true, 3)]
 		/// if this is true, aim will be unrestricted to angles, and will aim freely in all 3 axis, useful when dealing with AI and elevation
 		[Tooltip("if this is true, aim will be unrestricted to angles, and will aim freely in all 3 axis, useful when dealing with AI and elevation")]
 		public bool Unrestricted3DAim = false;
@@ -24,7 +24,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("whether aim direction should be computed from the owner, or from the weapon")]
 		public AimCenters AimCenter = AimCenters.Owner;
 	    
-		[Header("Reticle and slopes")]
+		[MMInspectorGroup("Reticle and slopes", true, 4)]
 		/// whether or not the reticle should move vertically to stay above slopes
 		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("whether or not the reticle should move vertically to stay above slopes")]
@@ -67,6 +67,10 @@ namespace MoreMountains.TopDownEngine
 		{
 			if (!AimControlActive)
 			{
+				if (ReticleType == ReticleTypes.Scene)
+				{
+					ComputeReticlePosition();
+				}
 				return;
 			}
 			
@@ -233,18 +237,7 @@ namespace MoreMountains.TopDownEngine
 		
 		public virtual void GetMouseAim()
 		{
-			_mousePosition = InputManager.Instance.MousePosition;
-			
-			Ray ray = _mainCamera.ScreenPointToRay(_mousePosition);
-			Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
-			float distance;
-			if (_playerPlane.Raycast(ray, out distance))
-			{
-				Vector3 target = ray.GetPoint(distance);
-				_direction = target;
-			}
-            
-			_reticlePosition = _direction;
+			ComputeReticlePosition();
 
 			if (Vector3.Distance(_direction, transform.position) < MouseDeadZoneRadius)
 			{
@@ -265,7 +258,27 @@ namespace MoreMountains.TopDownEngine
 			else
 			{
 				_weaponAimCurrentAim = _direction - _weapon.transform.position;
+				if (_weapon.WeaponUseTransform)
+				{
+					_weaponAimCurrentAim = _direction - _weapon.WeaponUseTransform.position;
+				}
 			}
+		}
+
+		protected virtual void ComputeReticlePosition()
+		{
+			_mousePosition = InputManager.Instance.MousePosition;
+			
+			Ray ray = _mainCamera.ScreenPointToRay(_mousePosition);
+			Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
+			float distance;
+			if (_playerPlane.Raycast(ray, out distance))
+			{
+				Vector3 target = ray.GetPoint(distance);
+				_direction = target;
+			}
+            
+			_reticlePosition = _direction;
 		}
 
 		/// <summary>

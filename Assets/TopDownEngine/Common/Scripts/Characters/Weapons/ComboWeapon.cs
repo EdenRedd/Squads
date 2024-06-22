@@ -10,6 +10,8 @@ namespace MoreMountains.TopDownEngine
 	[AddComponentMenu("TopDown Engine/Weapons/Combo Weapon")]
 	public class ComboWeapon : TopDownMonoBehaviour
 	{
+		public enum InputModes { SemiAuto, Auto }
+		
 		[Header("Combo")]
 		/// whether or not the combo can be dropped if enough time passes between two consecutive attacks
 		[Tooltip("whether or not the combo can be dropped if enough time passes between two consecutive attacks")]
@@ -17,7 +19,10 @@ namespace MoreMountains.TopDownEngine
 		/// the delay after which the combo drops
 		[Tooltip("the delay after which the combo drops")]
 		public float DropComboDelay = 0.5f;
-
+		/// the input mode for this combo weapon. In Auto mode, you'll want to make sure you've set ContinuousPress:true on your CharacterHandleWeapon ability
+		[Tooltip("the input mode for this combo weapon. In Auto mode, you'll want to make sure you've set ContinuousPress:true on your CharacterHandleWeapon ability")]
+		public InputModes InputMode = InputModes.SemiAuto;
+		
 		[Header("Animation")]
 
 		/// the name of the animation parameter to update when a combo is in progress.

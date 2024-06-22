@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7775759011089201903}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9312387, y: 9.626099, z: -11.706882}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponName: 
   WeaponCurrentlyActive: 1
+  InputAuthorized: 1
   TriggerMode: 1
   DelayBeforeUse: 0
   DelayBeforeUseReleaseInterruption: 1
@@ -62,12 +63,14 @@ MonoBehaviour:
   AmmoConsumedPerShot: 1
   AutoDestroyWhenEmpty: 0
   AutoDestroyWhenEmptyDelay: 1
+  PreventReloadIfAmmoEmpty: 0
   CurrentAmmoLoaded: 0
   WeaponAttachmentOffset: {x: 0, y: 0, z: 0}
   FlipWeaponOnCharacterFlip: 1
   RightFacingFlipValue: {x: 1, y: 1, z: 1}
   LeftFacingFlipValue: {x: -1, y: 1, z: 1}
   WeaponUseTransform: {fileID: 0}
+  WeaponShouldFlip: 1
   LeftHandHandle: {fileID: 0}
   RightHandHandle: {fileID: 0}
   ModifyMovementWhileAttacking: 0
@@ -77,6 +80,7 @@ MonoBehaviour:
   RecoilForce: 0
   Animators: []
   PerformAnimatorSanityChecks: 0
+  MirrorCharacterAnimatorParameters: 0
   WeaponAnimationID: 0
   IdleAnimationParameter: 
   StartAnimationParameter: 
@@ -90,12 +94,14 @@ MonoBehaviour:
   ReloadStopAnimationParameter: 
   WeaponAngleAnimationParameter: 
   WeaponAngleRelativeAnimationParameter: 
+  EquippedAnimationParameter: 
   WeaponStartMMFeedback: {fileID: 0}
   WeaponUsedMMFeedback: {fileID: 0}
   WeaponUsedMMFeedbackAlt: {fileID: 0}
   WeaponStopMMFeedback: {fileID: 0}
   WeaponReloadMMFeedback: {fileID: 0}
   WeaponReloadNeededMMFeedback: {fileID: 0}
+  WeaponReloadImpossibleMMFeedback: {fileID: 0}
   InitializeOnStart: 0
   Interruptable: 0
   Flipped: 0
@@ -112,6 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AimControl: 3
+  AimControlActive: 1
   RotationMode: 0
   WeaponRotationSpeed: 1
   MinimumAngle: -180
@@ -131,8 +138,10 @@ MonoBehaviour:
   CameraTargetMaxDistance: 10
   CameraTargetSpeed: 5
   Unrestricted3DAim: 0
+  AimCenter: 0
   ReticleMovesWithSlopes: 0
   ReticleObstacleMask:
     serializedVersion: 2
     m_Bits: 9
   MaximumSlopeElevation: 50
+  AvoidNullAim: 1

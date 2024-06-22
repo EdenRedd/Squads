@@ -100,11 +100,16 @@ namespace MoreMountains.TopDownEngine
 			{
 				return;
 			}
+			
+			if ((_mmPath.CycleOption == MMPath.CycleOptions.OnlyOnce) && _mmPath.EndReached)
+			{
+				StopMovement();
+				return;
+			}
 
 			if (Time.time - _lastPatrolPointReachedAt < _waitingDelay)
 			{
-				_characterMovement.SetHorizontalMovement(0f);
-				_characterMovement.SetVerticalMovement(0f);
+				StopMovement();
 				return;
 			}
 
@@ -126,6 +131,12 @@ namespace MoreMountains.TopDownEngine
 			_characterMovement.SetVerticalMovement(_direction.y);
 
 			_indexLastFrame = _currentIndex;
+		}
+		
+		protected virtual void StopMovement()
+		{
+			_characterMovement.SetHorizontalMovement(0f);
+			_characterMovement.SetVerticalMovement(0f);
 		}
 
 		protected virtual void DetermineDelay()

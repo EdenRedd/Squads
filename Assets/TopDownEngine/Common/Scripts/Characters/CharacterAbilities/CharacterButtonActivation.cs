@@ -41,7 +41,6 @@ namespace MoreMountains.TopDownEngine
 			InButtonActivatedZone = false;
 			ButtonActivatedZone = null;
 			InButtonAutoActivatedZone = false;
-
 		}
 
 		/// <summary>
@@ -121,6 +120,23 @@ namespace MoreMountains.TopDownEngine
 		protected override void OnDeath()
 		{
 			base.OnDeath();
+			ResetFlags();
+		}
+
+		/// <summary>
+		/// On enable we ensure we reset our flags
+		/// </summary>
+		protected override void OnEnable()
+		{
+			base.OnEnable();
+			ResetFlags();
+		}
+
+		/// <summary>
+		/// Resets our zone flags
+		/// </summary>
+		protected virtual void ResetFlags()
+		{
 			InButtonActivatedZone = false;
 			ButtonActivatedZone = null;
 			InButtonAutoActivatedZone = false;

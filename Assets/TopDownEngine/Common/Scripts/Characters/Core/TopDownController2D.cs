@@ -253,7 +253,7 @@ namespace MoreMountains.TopDownEngine
 			// if we have a low friction (ice, marbles...) we lerp the speed accordingly
 			if (Friction > 0 && Friction < 1)
 			{
-				CurrentMovement = Vector3.Lerp(Speed, CurrentMovement, Time.deltaTime * Friction);
+				CurrentMovement = Vector3.Lerp(Speed, CurrentMovement, Time.fixedDeltaTime * Friction);
 			}
             
 			Vector2 newMovement = _rigidBody.position + (Vector2)(CurrentMovement + AddedForce) * Time.fixedDeltaTime;

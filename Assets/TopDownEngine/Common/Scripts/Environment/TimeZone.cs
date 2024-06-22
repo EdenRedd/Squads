@@ -14,7 +14,7 @@ namespace MoreMountains.TopDownEngine
 		/// the possible modes for this zone
 		public enum Modes { DurationBased, ExitBased }
 
-		[Header("Time Zone")]
+		[MMInspectorGroup("Time Zone", true, 18)]
 
 		/// whether this zone will modify time on entry for a certain duration, or until it is exited
 		[Tooltip("whether this zone will modify time on entry for a certain duration, or until it is exited")]

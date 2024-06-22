@@ -22,7 +22,7 @@ namespace MoreMountains.TopDownEngine
 	[AddComponentMenu("TopDown Engine/GUI/Dialogue Zone")]
 	public class DialogueZone : ButtonActivated
 	{
-		[Header("Dialogue Look")]
+		[MMInspectorGroup("Dialogue Look", true, 18)]
 
 		/// the prefab to use to display the dialogue
 		[Tooltip("the prefab to use to display the dialogue")]
@@ -43,7 +43,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the text alignment in the box used to display the text")]
 		public TextAnchor Alignment = TextAnchor.MiddleCenter;
         
-		[Header("Dialogue Speed (in seconds)")]
+		[MMInspectorGroup("Dialogue Speed (in seconds)", true, 19)]
 
 		/// the duration of the in and out fades
 		[Tooltip("the duration of the in and out fades")]
@@ -52,7 +52,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the time between two dialogues ")]
 		public float TransitionTime = 0.2f;
 
-		[Header("Dialogue Position")]
+		[MMInspectorGroup("Dialogue Position", true, 20)]
 
 		/// the distance from the top of the box collider the dialogue box should appear at
 		[Tooltip("the distance from the top of the box collider the dialogue box should appear at")]
@@ -61,13 +61,13 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("if this is true, the dialogue boxes will follow the zone's position")]
 		public bool BoxesFollowZone = false;
 
-		[Header("Player Movement")]
+		[MMInspectorGroup("Player Movement", true, 21)]
 
 		/// if this is set to true, the character will be able to move while dialogue is in progress
 		[Tooltip("if this is set to true, the character will be able to move while dialogue is in progress")]
 		public bool CanMoveWhileTalking = true;
 
-		[Header("Press button to go from one message to the next ?")]
+		[MMInspectorGroup("Press button to go from one message to the next ?", true, 22)]
 
 		/// whether or not this zone is handled by a button or not
 		[Tooltip("whether or not this zone is handled by a button or not")]
@@ -78,7 +78,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("The duration for which the message should be displayed, in seconds. only considered if the box is not button handled")]
 		public float MessageDuration = 3f;
         
-		[Header("Activations")]
+		[MMInspectorGroup("Activations", true, 23)]
 		/// true if can be activated more than once
 		[Tooltip("true if can be activated more than once")]
 		public bool ActivableMoreThanOnce = true;
@@ -88,7 +88,7 @@ namespace MoreMountains.TopDownEngine
 		public float InactiveTime = 2f;
 
 		/// the dialogue lines
-		[Tooltip("the dialogue lines")]
+		[MMInspectorGroup("Dialogue Lines", true, 24)]
 		public DialogueElement[] Dialogue;
 
 		/// private variables

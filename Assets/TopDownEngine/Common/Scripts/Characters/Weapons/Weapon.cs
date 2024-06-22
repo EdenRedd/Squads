@@ -248,6 +248,10 @@ namespace MoreMountains.TopDownEngine
 			get => _movementMultiplierStorage;
 			set => _movementMultiplierStorage = value;
 		}
+		
+		public bool IsComboWeapon { get; set; }
+		public bool IsAutoComboWeapon { get; set; }
+		
 		protected Animator _ownerAnimator;
 		protected WeaponPreventShooting _weaponPreventShooting;
 		protected float _delayBeforeUseCounter = 0f;
@@ -334,8 +338,12 @@ namespace MoreMountains.TopDownEngine
 		/// </summary>
 		public virtual void InitializeComboWeapons()
 		{
+			IsComboWeapon = false;
+			IsAutoComboWeapon = false;
 			if (_comboWeapon != null)
 			{
+				IsComboWeapon = true;
+				IsAutoComboWeapon = (_comboWeapon.InputMode == ComboWeapon.InputModes.Auto);
 				_comboWeapon.Initialization();
 			}
 		}
@@ -639,6 +647,12 @@ namespace MoreMountains.TopDownEngine
 		{
 			TurnWeaponOff();
 			ResetMovementMultiplier();
+			if ((WeaponState.CurrentState == WeaponStates.WeaponReload)
+			    || (WeaponState.CurrentState == WeaponStates.WeaponReloadStart)
+			    || (WeaponState.CurrentState == WeaponStates.WeaponReloadStop))
+			{
+				return;
+			}
 			WeaponState.ChangeState(WeaponStates.WeaponIdle);
 		}
 
@@ -647,6 +661,13 @@ namespace MoreMountains.TopDownEngine
 		/// </summary>
 		public virtual void Interrupt()
 		{
+			if ((WeaponState.CurrentState == WeaponStates.WeaponReload)
+			    || (WeaponState.CurrentState == WeaponStates.WeaponReloadStart)
+			    || (WeaponState.CurrentState == WeaponStates.WeaponReloadStop))
+			{
+				return;
+			}
+			
 			if (Interruptable)
 			{
 				WeaponState.ChangeState(WeaponStates.WeaponInterrupted);

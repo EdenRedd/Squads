@@ -24,6 +24,7 @@ namespace MoreMountains.TopDownEngine
 		protected Vector2 _distance;
 		protected bool _chacterOrientation2DNotNull;
 		protected Character.FacingDirections _newFacingDirection;
+		protected CharacterOrientation2D.FacingModes _initialFacingMode;
         
 		/// <summary>
 		/// On init we grab our CharacterOrientation2D ability
@@ -36,8 +37,21 @@ namespace MoreMountains.TopDownEngine
 			if (_characterOrientation2D != null)
 			{
 				_chacterOrientation2DNotNull = true;
-				_characterOrientation2D.FacingMode = CharacterOrientation2D.FacingModes.None;    
+				_initialFacingMode = _characterOrientation2D.FacingMode;    
 			}
+		}
+		
+		public override void OnEnterState()
+		{
+			_characterOrientation2D.FacingMode = CharacterOrientation2D.FacingModes.None;
+		}
+
+		/// <summary>
+		/// Describes what happens when the brain exits the state this action is in. Meant to be overridden.
+		/// </summary>
+		public override void OnExitState()
+		{
+			_characterOrientation2D.FacingMode = _initialFacingMode;
 		}
 
 		/// <summary>

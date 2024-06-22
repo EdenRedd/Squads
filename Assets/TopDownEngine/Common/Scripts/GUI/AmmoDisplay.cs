@@ -3,6 +3,9 @@ using System.Collections;
 using System.Text;
 using MoreMountains.Tools;
 using UnityEngine.UI;
+#if MM_TEXTMESHPRO
+using TMPro;
+#endif
 
 namespace MoreMountains.TopDownEngine
 {
@@ -13,15 +16,22 @@ namespace MoreMountains.TopDownEngine
 	[AddComponentMenu("TopDown Engine/GUI/AmmoDisplay")]
 	public class AmmoDisplay : MMProgressBar 
 	{
+		[MMInspectorGroup("Ammo Display", true, 12)]
 		/// the ID of the AmmoDisplay 
 		[Tooltip("the ID of the AmmoDisplay ")]
 		public int AmmoDisplayID = 0;
 		/// the Text object used to display the current ammo numbers
 		[Tooltip("the Text object used to display the current ammo numbers")]
 		public Text TextDisplay;
+		#if MM_TEXTMESHPRO
+		/// the TMP object used to display the current ammo numbers
+		[Tooltip("the TMP object used to display the current ammo numbers")]
+		public TMP_Text TextDisplayTextMeshPro;
+		#endif
 
 		protected int _totalAmmoLastTime, _maxAmmoLastTime, _ammoInMagazineLastTime, _magazineSizeLastTime;
 		protected StringBuilder _stringBuilder;
+		protected bool _isTextDisplayTextMeshProNotNull;
 
 		/// <summary>
 		/// On init we initialize our string builder
@@ -30,6 +40,9 @@ namespace MoreMountains.TopDownEngine
 		{
 			base.Initialization();
 			_stringBuilder = new StringBuilder();
+			#if MM_TEXTMESHPRO
+			_isTextDisplayTextMeshProNotNull = TextDisplayTextMeshPro != null;
+			#endif
 		}
 		
 		/// <summary>
@@ -42,6 +55,13 @@ namespace MoreMountains.TopDownEngine
 			{
 				TextDisplay.text = newText;
 			}
+			
+			#if MM_TEXTMESHPRO
+			if (_isTextDisplayTextMeshProNotNull)
+			{
+				TextDisplayTextMeshPro.text = newText;
+			}
+			#endif
 		}
 
 		/// <summary>

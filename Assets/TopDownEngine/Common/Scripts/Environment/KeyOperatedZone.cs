@@ -13,7 +13,7 @@ namespace MoreMountains.TopDownEngine
 	[AddComponentMenu("TopDown Engine/Environment/Key Operated Zone")]
 	public class KeyOperatedZone : ButtonActivated 
 	{
-		[Header("Key")]
+		[MMInspectorGroup("Key", true, 18)]
 
 		/// whether this zone actually requires a key
 		[Tooltip("whether this zone actually requires a key")]

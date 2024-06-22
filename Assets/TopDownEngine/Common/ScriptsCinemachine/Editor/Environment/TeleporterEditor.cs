@@ -1,7 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+#endif
+
 using MoreMountains.Tools;
 
 namespace MoreMountains.TopDownEngine
@@ -12,7 +17,7 @@ namespace MoreMountains.TopDownEngine
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(Teleporter), true)]
 	[InitializeOnLoad]
-	public class TeleporterEditor : Editor
+	public class TeleporterEditor : MMMonoBehaviourUITKEditor 
 	{
 		[DrawGizmo(GizmoType.InSelectionHierarchy | GizmoType.NotInSelectionHierarchy)]
 		static void DrawHandles(Teleporter teleporter, GizmoType gizmoType)

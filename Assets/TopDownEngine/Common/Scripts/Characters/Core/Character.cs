@@ -745,8 +745,11 @@ namespace MoreMountains.TopDownEngine
 		/// </summary>
 		public virtual void UnFreeze()
 		{
-			_controller.SetGravityActive(true);
-			ConditionState.ChangeState(CharacterStates.CharacterConditions.Normal);
+			if (ConditionState.CurrentState == CharacterStates.CharacterConditions.Frozen)
+			{
+				_controller.SetGravityActive(true);
+				ConditionState.ChangeState(CharacterStates.CharacterConditions.Normal);
+			}
 		}
 
 		/// <summary>

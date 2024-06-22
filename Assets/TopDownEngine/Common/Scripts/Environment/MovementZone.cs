@@ -21,7 +21,7 @@ namespace MoreMountains.TopDownEngine
 			public CharacterMovement TargetCharacterMovement;
 		}
 
-		[Header("Movement Zone")]
+		[MMInspectorGroup("Movement Zone", true, 18)]
 		/// the new movement multiplier to apply
 		[Tooltip("the new movement multiplier to apply")]
 		public float MovementSpeedMultiplier = 0.5f;

@@ -19,7 +19,7 @@ namespace MoreMountains.TopDownEngine
 		public Text PlayerName;
 		/// the radial progress bar to put around the avatar
 		[Tooltip("the radial progress bar to put around the avatar")]
-		public MMRadialProgressBar AvatarBar;
+		public MMProgressBar AvatarBar;
 		/// the counter used to display coin amounts
 		[Tooltip("the counter used to display coin amounts")]
 		public Text CoinCounter;

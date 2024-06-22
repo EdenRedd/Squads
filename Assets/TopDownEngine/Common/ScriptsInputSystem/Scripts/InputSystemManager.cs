@@ -18,6 +18,9 @@ namespace MoreMountains.TopDownEngine
         /// the position of the mouse
         public override Vector2 MousePosition => Mouse.current.position.ReadValue();
 
+        protected Vector2 _primaryMovementInput;
+        protected Vector2 _secondaryMovementInput;
+
         protected override void Awake()
         {
             base.Awake();
@@ -33,10 +36,10 @@ namespace MoreMountains.TopDownEngine
 
             InputActions.PlayerControls.PrimaryMovement.performed += context =>
             {
-                _primaryMovement = ApplyCameraRotation(context.ReadValue<Vector2>());
+                _primaryMovementInput = context.ReadValue<Vector2>();
                 TestForceDesktop();
             };
-            InputActions.PlayerControls.SecondaryMovement.performed += context => _secondaryMovement = ApplyCameraRotation(context.ReadValue<Vector2>());
+            InputActions.PlayerControls.SecondaryMovement.performed += context => _secondaryMovementInput = context.ReadValue<Vector2>();
             InputActions.PlayerControls.CameraRotation.performed += context => _cameraRotationInput = context.ReadValue<float>();
 
             InputActions.PlayerControls.Jump.performed += context => { BindButton(context, JumpButton); };
@@ -70,9 +73,11 @@ namespace MoreMountains.TopDownEngine
             
         }
 
-        protected virtual void Update()
+        protected override void Update()
         {
             TestAutoRevert();
+            _primaryMovement = ApplyCameraRotation(_primaryMovementInput);
+            _secondaryMovement = ApplyCameraRotation(_secondaryMovementInput);
         }
 
         protected virtual void TestAutoRevert()

@@ -117,12 +117,7 @@ namespace MoreMountains.TopDownEngine
 			}
 			else
 			{
-				_rotationDirection = _weaponAim.CurrentAim.normalized;
-				if (LockVerticalRotation)
-				{
-					_rotationDirection.y = 0;
-				}
-				this.transform.LookAt(_weaponAim.transform.position + 10f * _rotationDirection);
+				this.transform.rotation = _weaponAim.transform.rotation;
 			}
 		}
 

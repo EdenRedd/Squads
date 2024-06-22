@@ -443,6 +443,7 @@ MonoBehaviour:
           ButtonText: Debug Stop Sound
         PlayMethod: 0
         PoolSize: 10
+        UseLegacyEventsMode: 0
         StopSoundOnFeedbackStop: 1
         MinVolume: 0.5
         MaxVolume: 0.5
@@ -510,7 +511,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5368971261599636429}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.06, y: 0, z: -7.55}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5368971261767748868}
@@ -738,6 +739,8 @@ MonoBehaviour:
     AmplitudeMax: {x: 1, y: 1, z: 1}
     RelativeAmplitude: 1
     UniformValues: 0
+    ForceVectorLength: 0
+    ForcedVectorLength: 1
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -839,6 +842,8 @@ MonoBehaviour:
     AmplitudeMax: {x: 1, y: 1, z: 1}
     RelativeAmplitude: 1
     UniformValues: 0
+    ForceVectorLength: 0
+    ForcedVectorLength: 1
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -940,6 +945,8 @@ MonoBehaviour:
     AmplitudeMax: {x: 1, y: 1, z: 1}
     RelativeAmplitude: 1
     UniformValues: 0
+    ForceVectorLength: 0
+    ForcedVectorLength: 1
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -1164,6 +1171,7 @@ MonoBehaviour:
   OneTimeButton: 0
   DisableAfterOneTime: 0
   DisableGameObjectAfterOneTime: 0
+  GetInitialValueOnOneTime: 0
   AudioAnalyzer: {fileID: 0}
   BeatID: 0
   AudioAnalyzerMultiplier: 1
@@ -1662,6 +1670,8 @@ MonoBehaviour:
         StateOnReset: 1
         SetStateOnSkip: 0
         StateOnSkip: 1
+        SetStateOnPlayerComplete: 0
+        StateOnPlayerComplete: 1
 --- !u!1 &7631283321872429800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,6 +2204,7 @@ MonoBehaviour:
           ButtonText: Debug Stop Sound
         PlayMethod: 0
         PoolSize: 10
+        UseLegacyEventsMode: 0
         StopSoundOnFeedbackStop: 1
         MinVolume: 0.5
         MaxVolume: 0.5
@@ -2308,6 +2319,7 @@ MonoBehaviour:
         TargetShaderController: {fileID: 8611682648999929293}
         TargetShaderControllerList: []
         RevertToInitialValueAfterEnd: 0
+        GetInitialValueOnOneTime: 0
         OneTimeDuration: 0.2
         OneTimeAmplitude: 1
         OneTimeRemapMin: 0

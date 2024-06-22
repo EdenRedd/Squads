@@ -16,7 +16,7 @@ namespace MoreMountains.TopDownEngine
 		/// the possible types of reticles
 		public enum ReticleTypes { None, Scene, UI }
 
-		[Header("Control Mode")]
+		[MMInspectorGroup("Control Mode", true, 5)]
 		[MMInformation("Add this component to a Weapon and you'll be able to aim (rotate) it. It supports three different control modes : mouse (the weapon aims towards the pointer), primary movement (you'll aim towards the current input direction), or secondary movement (aims towards a second input axis, think twin stick shooters).", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
 		/// the aim control mode
 		[Tooltip("the selected aim control mode")]
@@ -25,7 +25,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("if this is true, this script will be able to read input from its specified AimControl mode")]
 		public bool AimControlActive = true;
 
-		[Header("Weapon Rotation")]
+		[MMInspectorGroup("Weapon Rotation", true, 10)]
 		[MMInformation("Here you can define whether the rotation is free, strict in 4 directions (top, bottom, left, right), or 8 directions (same + diagonals). You can also define a rotation speed, and a min and max angle. For example, if you don't want your character to be able to aim in its back, set min angle to -90 and max angle to 90.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
 		/// the rotation mode
 		[Tooltip("the rotation mode")]
@@ -45,7 +45,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the minimum threshold at which the weapon's rotation magnitude will be considered ")]
 		public float MinimumMagnitude = 0.2f;
 
-		[Header("Reticle")]
+		[MMInspectorGroup("Reticle", true, 11)]
 		[MMInformation("You can also display a reticle on screen to check where you're aiming at. Leave it blank if you don't want to use one. If you set the reticle distance to 0, it'll follow the cursor, otherwise it'll be on a circle centered on the weapon. You can also ask it to follow the mouse, even replace the mouse pointer. You can also decide if the pointer should rotate to reflect aim angle or remain stable.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
 		/// Defines whether the reticle is placed in the scene or in the UI
 		[Tooltip("Defines whether the reticle is placed in the scene or in the UI")]
@@ -55,7 +55,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the gameobject to display as the aim's reticle/crosshair. Leave it blank if you don't want a reticle")]
 		public GameObject Reticle;
 		/// the distance at which the reticle will be from the weapon
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene)]
 		[Tooltip("the distance at which the reticle will be from the weapon")]
 		public float ReticleDistance;
 		/// the height at which the reticle should position itself above the ground, when in Scene mode
@@ -63,7 +63,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the height at which the reticle should position itself above the ground, when in Scene mode")]
 		public float ReticleHeight;
 		/// if set to true, the reticle will be placed at the mouse's position (like a pointer)
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene)]
 		[Tooltip("if set to true, the reticle will be placed at the mouse's position (like a pointer)")]
 		public bool ReticleAtMousePosition;
 		/// if set to true, the reticle will rotate on itself to reflect the weapon's rotation. If not it'll remain stable.
@@ -83,7 +83,7 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("if set to false, the reticle won't be added and displayed")]
 		public bool DisplayReticle = true;
 
-		[Header("CameraTarget")]
+		[MMInspectorGroup("Camera Target", true, 12)]
 		/// whether the camera target should be moved towards the reticle to provide a better vision of the possible target. If you don't have a reticle, it'll be moved towards your aim direction.
 		[Tooltip("whether the camera target should be moved towards the reticle to provide a better vision of the possible target. If you don't have a reticle, it'll be moved towards your aim direction.")]
 		public bool MoveCameraTargetTowardsReticle = false;

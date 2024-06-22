@@ -2,6 +2,8 @@
 using System.Collections;
 using MoreMountains.Tools;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace MoreMountains.TopDownEngine
 {	
@@ -51,6 +53,12 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the sfx to play when the player respawns")]
 		public AudioClip RespawnSfx;
 
+		[FormerlySerializedAs("OnRespawn")]
+		[Header("Events")] 
+		/// a Unity Event to trigger when respawning
+		[Tooltip("a Unity Event to trigger when respawning")]
+		public UnityEvent OnReviveEvent;
+
 		// respawn
 		public delegate void OnReviveDelegate();
 		public OnReviveDelegate OnRevive;
@@ -76,7 +84,10 @@ namespace MoreMountains.TopDownEngine
 			_collider2D = this.gameObject.GetComponent<Collider2D> ();
 			_renderer = this.gameObject.GetComponent<Renderer> ();
 			_character = this.gameObject.GetComponent<Character>();
-			_health = _character.CharacterHealth;
+			if (_character != null)
+			{
+				_health = _character.CharacterHealth;
+			}
 			_aiBrain = this.gameObject.GetComponent<AIBrain>();
 			if ((_aiBrain == null) && (_character != null))
 			{
@@ -202,6 +213,10 @@ namespace MoreMountains.TopDownEngine
 				_aiBrain.ResetBrain();
 			}
 			OnRevive?.Invoke();
+			if (OnReviveEvent != null)
+			{
+				OnReviveEvent.Invoke();
+			}
 		}
 
 		/// <summary>

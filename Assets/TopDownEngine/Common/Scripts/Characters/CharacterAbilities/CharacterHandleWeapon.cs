@@ -256,6 +256,11 @@ namespace MoreMountains.TopDownEngine
 			{
 				ShootStart();
 			}
+			
+			if (inputAuthorized && ContinuousPress && (CurrentWeapon.IsAutoComboWeapon) && buttonPressed)
+			{
+				ShootStart();
+			}
             
 			if (_inputManager.ReloadButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
 			{

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using MoreMountains.Tools;
 
 namespace MoreMountains.TopDownEngine
@@ -70,6 +68,7 @@ namespace MoreMountains.TopDownEngine
 		protected Vector3 _direction;
 		protected Vector3 _newPosition;
 		protected float _speed;
+		protected Vector3 _initialPosition;
 
 		/// <summary>
 		/// On Awake we initialize our magnet
@@ -88,18 +87,33 @@ namespace MoreMountains.TopDownEngine
 		/// </summary>
 		protected virtual void Initialization()
 		{
+			_initialPosition = this.transform.position;
+			
 			_collider2D = this.gameObject.GetComponent<Collider2D>();
 			if (_collider2D != null) { _collider2D.isTrigger = true; }
 			
 			_collider = this.gameObject.GetComponent<Collider>();
 			if (_collider != null) { _collider.isTrigger = true; }
-
+			
 			Reset();
 		}
-		protected virtual void Reset()
+		
+		/// <summary>
+		/// Call this to reset the target and speed of this magnetic object
+		/// </summary>
+		public virtual void Reset()
 		{
-			StopFollowing();
+			Target = null;
 			_speed = 0f;
+		}
+
+		/// <summary>
+		/// Call this to reset the position of the magnetic to its initial position
+		/// </summary>
+		public virtual void ResetPosition()
+		{
+			this.transform.position = _initialPosition;
+			Reset();
 		}
 
 		/// <summary>

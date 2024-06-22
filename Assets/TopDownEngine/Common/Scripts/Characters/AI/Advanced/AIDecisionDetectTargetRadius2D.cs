@@ -12,32 +12,44 @@ namespace MoreMountains.TopDownEngine
 	//[RequireComponent(typeof(CharacterOrientation2D))]
 	public class AIDecisionDetectTargetRadius2D : AIDecision
 	{
-		public enum ObstaclesDetectionModes { Boxcast, Raycast }
-        
+		public enum ObstaclesDetectionModes
+		{
+			Boxcast,
+			Raycast
+		}
+
 		/// the radius to search our target in
 		[Tooltip("the radius to search our target in")]
 		public float Radius = 3f;
+
 		/// the center of the search circle
 		[Tooltip("the center of the search circle")]
 		public Vector3 DetectionOriginOffset = new Vector3(0, 0, 0);
+
 		/// the layer(s) to search our target on
 		[Tooltip("the layer(s) to search our target on")]
 		public LayerMask TargetLayer;
+
 		/// whether or not to look for obstacles
 		[Tooltip("whether or not to look for obstacles")]
 		public bool ObstacleDetection = true;
+
 		/// the layer(s) to look for obstacles on
 		[Tooltip("the layer(s) to look for obstacles on")]
 		public LayerMask ObstacleMask = LayerManager.ObstaclesLayerMask;
+
 		/// the method to use to detect obstacles
 		[Tooltip("the method to use to detect obstacles")]
 		public ObstaclesDetectionModes ObstaclesDetectionMode = ObstaclesDetectionModes.Raycast;
+
 		/// if this is true, this AI will be able to consider itself (or its children) a target
-		[Tooltip("if this is true, this AI will be able to consider itself (or its children) a target")] 
+		[Tooltip("if this is true, this AI will be able to consider itself (or its children) a target")]
 		public bool CanTargetSelf = false;
+
 		/// the frequency (in seconds) at which to check for obstacles
 		[Tooltip("the frequency (in seconds) at which to check for obstacles")]
 		public float TargetCheckFrequency = 1f;
+
 		/// the maximum amount of targets the overlap detection can acquire
 		[Tooltip("the maximum amount of targets the overlap detection can acquire")]
 		public int OverlapMaximum = 10;
@@ -90,90 +102,60 @@ namespace MoreMountains.TopDownEngine
 			{
 				return _lastReturnValue;
 			}
-			_potentialTargets.Clear();
+
 			_lastTargetCheckTimestamp = Time.time;
-			
-			if (_orientation2D != null)
+
+			ComputeRaycastOrigin();
+
+			if (!GetPotentialTargets())
 			{
-				_facingDirection = _orientation2D.IsFacingRight ? Vector2.right : Vector2.left;
-				_raycastOrigin.x = transform.position.x + _facingDirection.x * DetectionOriginOffset.x / 2;
-				_raycastOrigin.y = transform.position.y + DetectionOriginOffset.y;
-			}
-			else
-			{
-				_raycastOrigin = transform.position +  DetectionOriginOffset;
-			}
-            
-			int numberOfResults = Physics2D.OverlapCircleNonAlloc(_raycastOrigin, Radius, _results, TargetLayer);     
-			// if there are no targets around, we exit
-			if (numberOfResults == 0)
-			{
-				_lastReturnValue = false;
 				return false;
 			}
-            
-			// we go through each collider found
-			int min = Mathf.Min(OverlapMaximum, numberOfResults);
-			for (int i = 0; i < min; i++)
-			{
-				if (_results[i] == null)
-				{
-					continue;
-				}
-                
-				if (!CanTargetSelf)
-				{
-					if ((_results[i].gameObject == _brain.Owner) || (_results[i].transform.IsChildOf(this.transform)))
-					{
-						continue;
-					}    
-				}
-                
-				_potentialTargets.Add(_results[i].gameObject.transform);
-			}
-            
+
 			// we check if there's a target in the list
 			if (_potentialTargets.Count == 0)
 			{
 				_lastReturnValue = false;
 				return false;
 			}
-            
-			// we sort our targets by distance
-			_potentialTargets.Sort(delegate(Transform a, Transform b)
+
+			SortTargetsByDistance();
+
+			if (FindUnobscuredTarget())
 			{
-				if (a == null || b == null)
-				{
-					return 0;
-				}
-                
-				return Vector2.Distance(this.transform.position,a.transform.position)
-					.CompareTo(
-						Vector2.Distance(this.transform.position,b.transform.position) );
-			});
-            
+				return true;
+			}
+
+			_lastReturnValue = false;
+			return false;
+		}
+
+		protected virtual bool FindUnobscuredTarget()
+		{
 			if (!ObstacleDetection && _potentialTargets[0] != null)
 			{
 				_brain.Target = _potentialTargets[0].gameObject.transform;
-				_lastReturnValue = true; 
+				_lastReturnValue = true;
 				return true;
 			}
-            
+
 			// we return the first unobscured target
 			foreach (Transform t in _potentialTargets)
 			{
-				_boxcastDirection = (Vector2)(t.gameObject.MMGetComponentNoAlloc<Collider2D>().bounds.center - _collider.bounds.center);
-                
+				_boxcastDirection = (Vector2)(t.gameObject.MMGetComponentNoAlloc<Collider2D>().bounds.center -
+				                              _collider.bounds.center);
+
 				if (ObstaclesDetectionMode == ObstaclesDetectionModes.Boxcast)
 				{
-					_hit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f, _boxcastDirection.normalized, _boxcastDirection.magnitude, ObstacleMask);    
+					_hit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f,
+						_boxcastDirection.normalized, _boxcastDirection.magnitude, ObstacleMask);
 				}
 				else
 				{
 					_hit = MMDebug.RayCast(_collider.bounds.center, _boxcastDirection, _boxcastDirection.magnitude,
 						ObstacleMask, Color.yellow, true);
 				}
-                
+
 				if (!_hit)
 				{
 					_brain.Target = t;
@@ -182,8 +164,78 @@ namespace MoreMountains.TopDownEngine
 				}
 			}
 
-			_lastReturnValue = false;
 			return false;
+		}
+
+		protected virtual void SortTargetsByDistance()
+		{
+			_potentialTargets.Sort(delegate(Transform a, Transform b)
+			{
+				if (a == null || b == null)
+				{
+					return 0;
+				}
+
+				return Vector2.Distance(this.transform.position, a.transform.position)
+					.CompareTo(
+						Vector2.Distance(this.transform.position, b.transform.position));
+			});
+		}
+
+		protected virtual void ComputeRaycastOrigin()
+		{
+			if (_orientation2D != null)
+			{
+				_facingDirection = _orientation2D.IsFacingRight ? Vector2.right : Vector2.left;
+				_raycastOrigin.x = transform.position.x + _facingDirection.x * DetectionOriginOffset.x / 2;
+				_raycastOrigin.y = transform.position.y + DetectionOriginOffset.y;
+			}
+			else
+			{
+				_raycastOrigin = transform.position + DetectionOriginOffset;
+			}
+		}
+
+		protected virtual bool GetPotentialTargets()
+		{
+			int numberOfResults = Physics2D.OverlapCircleNonAlloc(_raycastOrigin, Radius, _results, TargetLayer);
+			// if there are no targets around, we exit
+			if (numberOfResults == 0)
+			{
+				_lastReturnValue = false;
+				return false;
+			}
+
+			// we go through each collider found
+			_potentialTargets.Clear();
+			int min = Mathf.Min(OverlapMaximum, numberOfResults);
+			for (int i = 0; i < min; i++)
+			{
+				if (ColliderIsAPotentialTarget(_results[i]))
+				{
+					_potentialTargets.Add(_results[i].gameObject.transform);
+				}
+			}
+
+			return true;
+		}
+
+		protected virtual bool ColliderIsAPotentialTarget(Collider2D collider2D)
+		{
+			if (collider2D == null)
+			{
+				return false;
+			}
+
+			if (!CanTargetSelf)
+			{
+				if ((collider2D.gameObject == _brain.Owner) || (collider2D.transform.IsChildOf(this.transform)))
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 		/// <summary>
@@ -200,7 +252,7 @@ namespace MoreMountains.TopDownEngine
 			{
 				Gizmos.color = _gizmoColor;
 				Gizmos.DrawSphere(_raycastOrigin, Radius);
-			}            
+			}
 		}
 	}
 }
