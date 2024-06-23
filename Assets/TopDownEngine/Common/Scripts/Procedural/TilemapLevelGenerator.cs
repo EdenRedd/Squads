@@ -43,6 +43,13 @@ namespace MoreMountains.TopDownEngine
 		[Tooltip("the minimum distance that should separate spawn and exit.")]
 		public float MinDistanceFromSpawnToExit = 2f;
 
+		[Header("Enemy Spawns")]
+		public int enemyAmountToSpawn = 2;
+
+		public GameObject enemyPrefab;
+
+
+
 		protected const int _maxIterationsCount = 100;
         
 		/// <summary>
@@ -63,9 +70,25 @@ namespace MoreMountains.TopDownEngine
 		{
 			base.Generate();
 			HandleWallsShadow();
-			PlaceEntryAndExit();
+            if (Application.isPlaying)
+            {
+                PlaceEnemies(); //Placed before PlaceEntryAndExit because that functions sets a random seed.
+            }
+            PlaceEntryAndExit();
 			ResizeLevelManager();
 		}
+
+		protected virtual void PlaceEnemies()
+		{
+			for(int i = 0; i < enemyAmountToSpawn; i++) {
+                int width = UnityEngine.Random.Range(GridWidth.x, GridWidth.y);
+                int height = UnityEngine.Random.Range(GridHeight.x, GridHeight.y);
+
+                Vector3 spawnPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
+
+                GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            }
+        }
 
 		/// <summary>
 		/// Resizes the level manager's bounds to match the new level
