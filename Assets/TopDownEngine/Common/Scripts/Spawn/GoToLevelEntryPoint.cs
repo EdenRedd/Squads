@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using MoreMountains.TopDownEngine;
 
 namespace MoreMountains.TopDownEngine
 {
@@ -34,8 +35,10 @@ namespace MoreMountains.TopDownEngine
 			{
 				GameManager.Instance.StorePointsOfEntry(LevelName, PointOfEntryIndex, FacingDirection);
 			}
-			
-			base.GoToNextLevel ();
+			if (!this.gameObject.GetComponent<EnemyDetector>().EnemiesInScene())
+			{
+                base.GoToNextLevel();
+            }
 		}
 	}
 }

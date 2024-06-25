@@ -70,21 +70,26 @@ namespace MoreMountains.TopDownEngine
 		{
 			base.Generate();
 			HandleWallsShadow();
+            PlaceEntryAndExit();
+			ResizeLevelManager();
             if (Application.isPlaying)
             {
                 PlaceEnemies(); //Placed before PlaceEntryAndExit because that functions sets a random seed.
             }
-            PlaceEntryAndExit();
-			ResizeLevelManager();
-		}
+        }
 
 		protected virtual void PlaceEnemies()
 		{
-			for(int i = 0; i < enemyAmountToSpawn; i++) {
+            BoxCollider boxCollider = TargetLevelManager.GetComponent<BoxCollider>();
+
+            Bounds bounds = ObstaclesTilemap.localBounds;
+            boxCollider.center = bounds.center;
+            boxCollider.size = new Vector3(bounds.size.x, bounds.size.y, boxCollider.size.z);
+            for (int i = 0; i < enemyAmountToSpawn; i++) {
+                UnityEngine.Random.InitState(i);
                 int width = UnityEngine.Random.Range(GridWidth.x, GridWidth.y);
                 int height = UnityEngine.Random.Range(GridHeight.x, GridHeight.y);
-
-                Vector3 spawnPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
+                Vector3 spawnPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 5);
 
                 GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             }
@@ -100,7 +105,7 @@ namespace MoreMountains.TopDownEngine
 			Bounds bounds = ObstaclesTilemap.localBounds;
 			boxCollider.center = bounds.center;
 			boxCollider.size = new Vector3(bounds.size.x, bounds.size.y, boxCollider.size.z);
-		}
+        }
 
 		/// <summary>
 		/// Moves the spawn and exit to empty places
@@ -110,7 +115,12 @@ namespace MoreMountains.TopDownEngine
 			UnityEngine.Random.InitState(GlobalSeed);
 			int width = UnityEngine.Random.Range(GridWidth.x, GridWidth.y);
 			int height = UnityEngine.Random.Range(GridHeight.x, GridHeight.y);
-            
+
+			//Debug.Log("THIS IS THE PLACE ENTRY AND EXIT FUNCTION");
+			//Debug.Log("Grid Width X: " + GridWidth.x);
+			//Debug.Log("Grid Width Y: " + GridWidth.y);
+			//Debug.Log("Grid Height X: " + GridHeight.x);
+			//Debug.Log("Grid Height Y: " + GridHeight.y);
 			Vector3 spawnPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
 			InitialSpawn.transform.position = spawnPosition;
 
