@@ -770,6 +770,10 @@ namespace MoreMountains.TopDownEngine
 			DamageDisabled();
 
 			DeathMMFeedbacks?.PlayFeedbacks(this.transform.position);
+			if(this.gameObject.tag == "Enemy")
+			{
+                MMGameEvent.Trigger("CharacterDeath");
+            }
             
 			// Adds points if needed.
 			if(PointsWhenDestroyed != 0)

@@ -1,3 +1,4 @@
+using MoreMountains.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,9 @@ namespace MoreMountains.TopDownEngine
 	/// A class used to check if there are enemies within the scene that are alive
     /// alive being their health is greater than 0
 	/// </summary>
-    public class EnemyDetector : MonoBehaviour
+    public class EnemyDetector : MonoBehaviour, MMEventListener<MMGameEvent>
     {
+        public GameObject rewardChest;
         public bool EnemiesInScene()
         {
             GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
@@ -24,6 +26,28 @@ namespace MoreMountains.TopDownEngine
             }
 
             return false;
+        }
+
+        public void SpawnChest()
+        {
+            GameObject.Instantiate(rewardChest);
+        }
+
+        public void OnMMEvent(MMGameEvent eventType)
+        {
+            if (!EnemiesInScene())
+            {
+                SpawnChest();
+            }
+        }
+
+        void OnEnable()
+        {
+            this.MMEventStartListening<MMGameEvent>();
+        }
+        void OnDisable()
+        {
+            this.MMEventStopListening<MMGameEvent>();
         }
     }
 }
