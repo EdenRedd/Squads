@@ -772,7 +772,7 @@ namespace MoreMountains.TopDownEngine
 			DeathMMFeedbacks?.PlayFeedbacks(this.transform.position);
 			if(this.gameObject.tag == "Enemy")
 			{
-                MMGameEvent.Trigger("CharacterDeath");
+                MMGameEvent.Trigger("CharacterDeath", this.gameObject.GetInstanceID());	
             }
             
 			// Adds points if needed.

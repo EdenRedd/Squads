@@ -24,9 +24,11 @@ namespace MoreMountains.TopDownEngine
 		public Grid TargetGrid;
 		/// the tilemap containing the walls
 		[Tooltip("the tilemap containing the walls")]
-		public Tilemap ObstaclesTilemap; 
-		/// the tilemap containing the walls' shadows
-		[Tooltip("the tilemap containing the walls' shadows")]
+		public Tilemap ObstaclesTilemap;
+        [Tooltip("the tilemap containing the ground")]
+        public Tilemap GroundTilemap;
+        /// the tilemap containing the walls' shadows
+        [Tooltip("the tilemap containing the walls' shadows")]
 		public MMTilemapShadow WallsShadowTilemap;
 		/// the level manager
 		[Tooltip("the level manager")]
@@ -44,10 +46,13 @@ namespace MoreMountains.TopDownEngine
 		public float MinDistanceFromSpawnToExit = 2f;
 
 		[Header("Enemy Spawns")]
-		public int enemyAmountToSpawn = 2;
+		public int enemyMinAmountToSpawn = 1;
 
-		public GameObject enemyPrefab;
+        public int enemyMaxAmountToSpawn = 4;
 
+        public GameObject enemyPrefab;
+
+		public LockTeleporter lockTeleporter;
 
 
 		protected const int _maxIterationsCount = 100;
@@ -71,27 +76,22 @@ namespace MoreMountains.TopDownEngine
 			base.Generate();
 			HandleWallsShadow();
             PlaceEntryAndExit();
-			ResizeLevelManager();
             if (Application.isPlaying)
             {
                 PlaceEnemies(); //Placed before PlaceEntryAndExit because that functions sets a random seed.
             }
+            ResizeLevelManager();
+            
         }
 
 		protected virtual void PlaceEnemies()
 		{
-            BoxCollider boxCollider = TargetLevelManager.GetComponent<BoxCollider>();
-
-            Bounds bounds = ObstaclesTilemap.localBounds;
-            boxCollider.center = bounds.center;
-            boxCollider.size = new Vector3(bounds.size.x, bounds.size.y, boxCollider.size.z);
+            int enemyAmountToSpawn = UnityEngine.Random.Range(enemyMinAmountToSpawn, enemyMaxAmountToSpawn);
             for (int i = 0; i < enemyAmountToSpawn; i++) {
-                UnityEngine.Random.InitState(i);
-                int width = UnityEngine.Random.Range(GridWidth.x, GridWidth.y);
-                int height = UnityEngine.Random.Range(GridHeight.x, GridHeight.y);
-                Vector3 spawnPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 5);
+				Vector3 spawnPosition = GetRandomTilePosition();
 
-                GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+                GameObject enemy = GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+                lockTeleporter.gameObjects.Add(enemy.GetInstanceID());
             }
         }
 
@@ -116,11 +116,6 @@ namespace MoreMountains.TopDownEngine
 			int width = UnityEngine.Random.Range(GridWidth.x, GridWidth.y);
 			int height = UnityEngine.Random.Range(GridHeight.x, GridHeight.y);
 
-			//Debug.Log("THIS IS THE PLACE ENTRY AND EXIT FUNCTION");
-			//Debug.Log("Grid Width X: " + GridWidth.x);
-			//Debug.Log("Grid Width Y: " + GridWidth.y);
-			//Debug.Log("Grid Height X: " + GridHeight.x);
-			//Debug.Log("Grid Height Y: " + GridHeight.y);
 			Vector3 spawnPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
 			InitialSpawn.transform.position = spawnPosition;
 
@@ -145,5 +140,40 @@ namespace MoreMountains.TopDownEngine
 				WallsShadowTilemap.UpdateShadows();
 			}
 		}
-	}    
+
+        public Vector3 GetRandomTilePosition()
+        {
+            // Get the bounds of the primary Tilemap
+            BoundsInt bounds = GroundTilemap.cellBounds;
+
+            // Create a list to store all possible tile positions
+            List<Vector3Int> validTilePositions = new List<Vector3Int>();
+
+            // Iterate through all tiles in the bounds of the primary Tilemap
+            for (int x = bounds.xMin; x < bounds.xMax; x++)
+            {
+                for (int y = bounds.yMin; y < bounds.yMax; y++)
+                {
+                    Vector3Int localPlace = new Vector3Int(x, y, (int)GroundTilemap.transform.position.z);
+
+                    // Check if there's a tile in the primary Tilemap and no tile in the exclusion Tilemap
+                    if (GroundTilemap.HasTile(localPlace) && !ObstaclesTilemap.HasTile(localPlace))
+                    {
+                        validTilePositions.Add(localPlace);
+                    }
+                }
+            }
+
+            // Select a random tile position from the list
+            if (validTilePositions.Count > 0)
+            {
+                Vector3Int randomTilePosition = validTilePositions[Random.Range(0, validTilePositions.Count)];
+                Vector3 worldPosition = GroundTilemap.CellToWorld(randomTilePosition);
+                return worldPosition;
+            }
+
+            // If no valid tiles found, return zero vector (or handle accordingly)
+            return Vector3.zero;
+        }
+    }    
 }

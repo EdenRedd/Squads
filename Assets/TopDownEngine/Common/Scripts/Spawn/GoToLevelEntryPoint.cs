@@ -35,10 +35,7 @@ namespace MoreMountains.TopDownEngine
 			{
 				GameManager.Instance.StorePointsOfEntry(LevelName, PointOfEntryIndex, FacingDirection);
 			}
-			if (!this.gameObject.GetComponent<EnemyDetector>().EnemiesInScene())
-			{
                 base.GoToNextLevel();
-            }
 		}
 	}
 }
