@@ -4,49 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LockTeleporter : MonoBehaviour, MMEventListener<MMGameEvent>
+public class LockTeleporter : MonoBehaviour
 {
 
-    public List<int> gameObjects = new List<int>();
-
-    // Method to remove a specific GameObject from the list if it matches by instance ID
-    public void RemoveMatchingGameObject(int targetID)
+    public void enableTeleporter()
     {
-        for (int i = gameObjects.Count - 1; i >= 0; i--)
-        {
-            if (gameObjects[i] == targetID)
-            {
-                gameObjects.RemoveAt(i);
-            }
-        }
+        this.gameObject.GetComponent<Teleporter>().Activable = true;
     }
-
-
-
-    void MMEventListener<MMGameEvent>.OnMMEvent(MMGameEvent eventType)
-    {
-        if(eventType.EventName == "CharacterDeath")
-        {
-            RemoveMatchingGameObject(eventType.IntParameter);
-            if(gameObjects.Count <= 0)
-            {
-                this.gameObject.GetComponent<Teleporter>().Activable = true;
-            }
-        }
-
-        if(eventType.EventName == "SpawnedEnemy")
-        {
-            gameObjects.Add(eventType.IntParameter);
-        }
-    }
-
-    void OnEnable()
-    {
-        this.MMEventStartListening<MMGameEvent>();
-    }
-    void OnDisable()
-    {
-        this.MMEventStopListening<MMGameEvent>();
-    }
-
 }

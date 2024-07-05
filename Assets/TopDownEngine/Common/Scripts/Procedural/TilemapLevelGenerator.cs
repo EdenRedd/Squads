@@ -52,7 +52,7 @@ namespace MoreMountains.TopDownEngine
 
         public GameObject enemyPrefab;
 
-		public LockTeleporter lockTeleporter;
+		public EnemiesInRoomTracker enemiesInRoomTracker;
 
 
 		protected const int _maxIterationsCount = 100;
@@ -80,8 +80,7 @@ namespace MoreMountains.TopDownEngine
             {
                 PlaceEnemies(); //Placed before PlaceEntryAndExit because that functions sets a random seed.
             }
-            ResizeLevelManager();
-            
+            //ResizeLevelManager();
         }
 
 		protected virtual void PlaceEnemies()
@@ -91,7 +90,7 @@ namespace MoreMountains.TopDownEngine
 				Vector3 spawnPosition = GetRandomTilePosition();
 
                 GameObject enemy = GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-                lockTeleporter.gameObjects.Add(enemy.GetInstanceID());
+                enemiesInRoomTracker.enemiesInRoom.Add(enemy.GetInstanceID());
             }
         }
 
