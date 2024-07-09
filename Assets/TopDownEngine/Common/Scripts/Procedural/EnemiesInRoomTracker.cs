@@ -8,7 +8,7 @@ public class EnemiesInRoomTracker : MonoBehaviour, MMEventListener<MMGameEvent>
 {
     public List<int> enemiesInRoom = new List<int>();
     public LootSpawner spawner;
-    public LockTeleporter lockTeleporter;
+    public List<LockTeleporter> lockTeleporterList;
 
     public void OnMMEvent(MMGameEvent eventType)
     {
@@ -18,7 +18,10 @@ public class EnemiesInRoomTracker : MonoBehaviour, MMEventListener<MMGameEvent>
             if (enemiesInRoom.Count <= 0)
             {
                 spawner.spawnChest();
-                lockTeleporter.enableTeleporter();
+                for(int i = 0; i < lockTeleporterList.Count; i++)
+                {
+                    lockTeleporterList[i].enableTeleporter();
+                }
             }
         }
 

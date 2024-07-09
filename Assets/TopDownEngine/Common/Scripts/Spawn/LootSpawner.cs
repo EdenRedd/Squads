@@ -7,8 +7,9 @@ using UnityEngine;
 public class LootSpawner : MonoBehaviour
 {
     public GameObject lootToSpawn;
+    public Transform positionToSpawnAt;
     public void spawnChest()
     {
-        GameObject.Instantiate(lootToSpawn, GameObject.FindGameObjectWithTag("Player").transform.position, Quaternion.identity);
+        GameObject.Instantiate(lootToSpawn, positionToSpawnAt.position, Quaternion.identity);
     }
 }

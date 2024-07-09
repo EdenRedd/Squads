@@ -157,6 +157,7 @@ namespace MoreMountains.TopDownEngine
 			if (RemainingDeaths <= 0)
 			{
 				OnLastDeath?.Invoke();
+				//Right here would be where we would call upon our wave manager
 			}
 		}
 
