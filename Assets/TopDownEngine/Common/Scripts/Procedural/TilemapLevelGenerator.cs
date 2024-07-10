@@ -54,8 +54,10 @@ namespace MoreMountains.TopDownEngine
 
 		public EnemiesInRoomTracker enemiesInRoomTracker;
 
+        [Header("Room")]
+        public bool isSpawnRoom = false;
 
-		protected const int _maxIterationsCount = 100;
+        protected const int _maxIterationsCount = 100;
         
 		/// <summary>
 		/// On awake we generate our level if needed
@@ -64,7 +66,7 @@ namespace MoreMountains.TopDownEngine
 		{
 			if (GenerateOnAwake)
 			{
-				Generate();
+                Generate();
 			}
 		}
 
@@ -91,7 +93,14 @@ namespace MoreMountains.TopDownEngine
 
                 GameObject enemy = GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
                 enemiesInRoomTracker.enemiesInRoom.Add(enemy.GetInstanceID());
+
+				if (isSpawnRoom)
+				{
+					KillsManager.Instance.TargetsList.Add(enemy.GetComponent<Health>());
+					
+				}
             }
+            KillsManager.Instance.RefreshRemainingDeaths();
         }
 
 		/// <summary>

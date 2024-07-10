@@ -24,11 +24,6 @@ public class EnemiesInRoomTracker : MonoBehaviour, MMEventListener<MMGameEvent>
                 }
             }
         }
-
-        if (eventType.EventName == "SpawnedEnemy")
-        {
-            enemiesInRoom.Add(eventType.IntParameter);
-        }
     }
 
     // Method to remove a specific GameObject from the list if it matches by instance ID

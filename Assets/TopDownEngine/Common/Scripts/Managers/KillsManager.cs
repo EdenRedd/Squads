@@ -60,21 +60,37 @@ namespace MoreMountains.TopDownEngine
 		/// An optional text counter displaying the remaining amount of deaths before OnLastDeath
 		[Tooltip("An optional text counter displaying the remaining amount of deaths before OnLastDeath")]
 		public TMP_Text RemainingCounter_TMP;
-		#endif
-		
-		/// <summary>
-		/// Statics initialization to support enter play modes
-		/// </summary>
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+#endif
+
+        public static KillsManager instance = null;
+        /// <summary>
+        /// Statics initialization to support enter play modes
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 		protected static void InitializeStatics()
 		{
 			_instance = null;
 		}
 
-		/// <summary>
-		/// On start we initialize our remaining deaths counter
-		/// </summary>
-		protected virtual void Start()
+        void Awake()
+        {
+            // Check if instance already exists
+            if (instance == null)
+                // If not, set instance to this
+                instance = this;
+            // If instance already exists and it's not this, destroy this.
+            // This enforces the singleton pattern, meaning there can only ever be one instance.
+            else if (instance != this)
+                Destroy(gameObject);
+
+            // Sets this to not be destroyed when reloading the scene
+            DontDestroyOnLoad(gameObject);
+        }
+
+        /// <summary>
+        /// On start we initialize our remaining deaths counter
+        /// </summary>
+        protected virtual void Start()
 		{
 			if (AutoSetKillThreshold)
 			{
@@ -82,7 +98,6 @@ namespace MoreMountains.TopDownEngine
 			}
 			RefreshRemainingDeaths();
 		}
-
 		/// <summary>
 		/// Use this method to change the current death threshold. This will also update the remaining death counter
 		/// </summary>
@@ -195,7 +210,7 @@ namespace MoreMountains.TopDownEngine
 		protected virtual void OnEnable()
 		{
 			this.MMEventStartListening<MMLifeCycleEvent>();
-		}
+        }
 
 		/// <summary>
 		/// OnDisable, we stop listening to events.
@@ -203,6 +218,6 @@ namespace MoreMountains.TopDownEngine
 		protected virtual void OnDisable()
 		{
 			this.MMEventStopListening<MMLifeCycleEvent>();
-		}
-	}
+        }
+    }
 }
