@@ -77,7 +77,7 @@ namespace MoreMountains.TopDownEngine
 		{
 			base.Generate();
 			HandleWallsShadow();
-            PlaceEntryAndExit();
+            //PlaceEntryAndExit();
             if (Application.isPlaying)
             {
                 PlaceEnemies(); //Placed before PlaceEntryAndExit because that functions sets a random seed.
@@ -85,22 +85,24 @@ namespace MoreMountains.TopDownEngine
             //ResizeLevelManager();
         }
 
-		protected virtual void PlaceEnemies()
+        protected virtual void PlaceEnemies()
 		{
-            int enemyAmountToSpawn = UnityEngine.Random.Range(enemyMinAmountToSpawn, enemyMaxAmountToSpawn);
-            for (int i = 0; i < enemyAmountToSpawn; i++) {
-				Vector3 spawnPosition = GetRandomTilePosition();
+            WaveManager.instance.PlaceEnemies(isSpawnRoom, GroundTilemap, ObstaclesTilemap, enemiesInRoomTracker);
+			isSpawnRoom = false;
+            //        int enemyAmountToSpawn = UnityEngine.Random.Range(enemyMinAmountToSpawn, enemyMaxAmountToSpawn);
+            //        for (int i = 0; i < enemyAmountToSpawn; i++) {
+            //Vector3 spawnPosition = GetRandomTilePosition();
 
-                GameObject enemy = GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-                enemiesInRoomTracker.enemiesInRoom.Add(enemy.GetInstanceID());
+            //            GameObject enemy = GameObject.Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            //            enemiesInRoomTracker.enemiesInRoom.Add(enemy.GetInstanceID());
 
-				if (isSpawnRoom)
-				{
-					KillsManager.Instance.TargetsList.Add(enemy.GetComponent<Health>());
-					
-				}
-            }
-            KillsManager.Instance.RefreshRemainingDeaths();
+            //if (isSpawnRoom)
+            //{
+            //	KillsManager.Instance.TargetsList.Add(enemy.GetComponent<Health>());
+
+            //}
+            //        }
+            //        KillsManager.Instance.RefreshRemainingDeaths();
         }
 
 		/// <summary>

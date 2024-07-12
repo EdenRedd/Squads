@@ -160,6 +160,12 @@ namespace MoreMountains.TopDownEngine
 				{
 					return;
 				}
+				else
+				{
+					TargetsList.Remove(lifeCycleEvent.AffectedHealth);
+				}
+
+
 			}
 			
 			// we trigger our OnDeath event

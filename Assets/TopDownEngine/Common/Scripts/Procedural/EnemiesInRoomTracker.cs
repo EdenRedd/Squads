@@ -15,14 +15,6 @@ public class EnemiesInRoomTracker : MonoBehaviour, MMEventListener<MMGameEvent>
         if (eventType.EventName == "CharacterDeath")
         {
             RemoveMatchingGameObject(eventType.IntParameter);
-            if (enemiesInRoom.Count <= 0)
-            {
-                spawner.spawnChest();
-                for(int i = 0; i < lockTeleporterList.Count; i++)
-                {
-                    lockTeleporterList[i].enableTeleporter();
-                }
-            }
         }
     }
 
@@ -36,6 +28,19 @@ public class EnemiesInRoomTracker : MonoBehaviour, MMEventListener<MMGameEvent>
                 enemiesInRoom.RemoveAt(i);
             }
         }
+    }
+
+    public void UnlockTeleporters()
+    {
+        for(int i = 0; i < lockTeleporterList.Count; i++)
+        {
+            lockTeleporterList[i].enableTeleporter();
+        }
+    }
+
+    public void SpawnChest()
+    {
+        spawner.spawnChest();
     }
 
     void OnEnable()
