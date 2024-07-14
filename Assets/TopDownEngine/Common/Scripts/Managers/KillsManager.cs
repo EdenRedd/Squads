@@ -162,13 +162,11 @@ namespace MoreMountains.TopDownEngine
 				}
 				else
 				{
-					TargetsList.Remove(lifeCycleEvent.AffectedHealth);
+					TargetsList.Remove(lifeCycleEvent.AffectedHealth); //We remove the health off the list so we can keep track of the ones alive
 				}
 
 
 			}
-			
-			// we trigger our OnDeath event
 			OnDeath?.Invoke();
 			RemainingDeaths--;
 
@@ -178,7 +176,6 @@ namespace MoreMountains.TopDownEngine
 			if (RemainingDeaths <= 0)
 			{
 				OnLastDeath?.Invoke();
-				//Right here would be where we would call upon our wave manager
 			}
 		}
 

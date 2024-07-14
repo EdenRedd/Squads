@@ -4980,6 +4980,8 @@ GameObject:
   - component: {fileID: 2437845140208405313}
   - component: {fileID: 467072173}
   - component: {fileID: 467072190}
+  - component: {fileID: 9102348959279238759}
+  - component: {fileID: -5881751784926660894}
   m_Layer: 13
   m_Name: KoalaNinjaRifleman
   m_TagString: Enemy
@@ -5372,17 +5374,21 @@ MonoBehaviour:
   - StateName: Moving
     Actions:
       array:
-      - {fileID: 467072190}
+      - {fileID: -5881751784926660894}
       - {fileID: 467072173}
+      - {fileID: 9102348959279238759}
     Transitions:
       array:
       - Decision: {fileID: 2438640544995507925}
-        TrueState: Deciding
+        TrueState: 
         FalseState: 
+      - Decision: {fileID: 2439401147963574603}
+        TrueState: 
+        FalseState: Attacking
   - StateName: Deciding
     Actions:
       array:
-      - {fileID: 2437835760440974471}
+      - {fileID: 9102348959279238759}
     Transitions:
       array:
       - Decision: {fileID: 2438468500197026521}
@@ -5394,12 +5400,15 @@ MonoBehaviour:
       - {fileID: 2437789940715566383}
     Transitions:
       array:
-      - Decision: {fileID: 2439401147963574603}
+      - Decision: {fileID: 2438640544995507925}
         TrueState: 
-        FalseState: Moving
+        FalseState: 
+      - Decision: {fileID: 2439401147963574603}
+        TrueState: Moving
+        FalseState: 
       - Decision: {fileID: 2438468500197026521}
         TrueState: 
-        FalseState: Deciding
+        FalseState: Moving
   TimeInThisState: 0
   Target: {fileID: 0}
   _lastKnownTargetPosition: {x: 0, y: 0, z: 0}
@@ -5424,7 +5433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Label: 
-  Radius: 8
+  Radius: 30
   DetectionOriginOffset: {x: 0, y: 0, z: 0}
   TargetLayer:
     serializedVersion: 2
@@ -5496,8 +5505,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Label: 
-  ComparisonMode: 1
-  Distance: 9
+  ComparisonMode: 3
+  Distance: 5
 --- !u!114 &2437845140208405313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5748,6 +5757,37 @@ MonoBehaviour:
   ObstaclesCheckFrequency: 0
   MinimumRandomDirection: {x: -1, y: -1}
   MaximumRandomDirection: {x: 1, y: 1}
+--- !u!114 &9102348959279238759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2325596686016990461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47557c9dd44293a41bc6710b083332de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitializationMode: 0
+  Label: 
+  UseMinimumXDistance: 1
+  MinimumXDistance: 3
+--- !u!114 &-5881751784926660894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2325596686016990461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f11b4fea1cac9d43860e5c5e194c852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitializationMode: 0
+  Label: 
+  OnlyRunOnce: 1
 --- !u!1 &2325619290637431437
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,24 +12,25 @@ using UnityEngine.Tilemaps;
  */
 public class WaveManager : MonoBehaviour
 {
-    private int currentRoomGameObjectId;
+    [Header("Spawn settings")]
     public int enemyMinAmountToSpawn = 1;
-
     public int enemyMaxAmountToSpawn = 4;
-
-    public GameObject enemyPrefab;
-    public Tilemap groundTilemap;
-    public Tilemap obstaclesTilemap;
-    public EnemiesInRoomTracker enemiesInRoomTracker;
-
     public int maxWaves = 2;
     public int currentWave = 1;
+
+    [HideInInspector]
+    public GameObject enemyPrefab;
+    [HideInInspector]
+    public Tilemap groundTilemap;
+    [HideInInspector]
+    public Tilemap obstaclesTilemap;
+    [HideInInspector]
+    public EnemiesInRoomTracker enemiesInRoomTracker;
 
     public static WaveManager instance = null;
 
     void Awake()
     {
-        Debug.Log("We woke up the Wave manager");
         // Check if instance already exists
         if (instance == null)
             // If not, set instance to this
@@ -60,13 +61,14 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    //funtion to set the next wave to spawn
-
+    /*
+     * When wave ends we check if we should spawn anothe or do the actions to
+     * end the encounter
+     */
     public void CallOnWaveFinish()
     {
         if(WaveAtMaxCheck())
         {
-            //unlock teleporters? and spawn in chest
             enemiesInRoomTracker.SpawnChest();
             enemiesInRoomTracker.UnlockTeleporters();
         }
@@ -78,11 +80,18 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    /*
+     * Have the manager spawn in the wave with the current room
+     */
     public void ManagerSpawnInWave()
     {
         PlaceEnemies(true, this.groundTilemap, this.obstaclesTilemap, this.enemiesInRoomTracker);
     }
 
+    /*
+     * Spawns in a random number of enemies depending on the range set within the given tiles
+     * Adds all the spawned in enemies to the killsmanager to keep track of the ones alive
+     */
     public void PlaceEnemies(bool isSpawnRoom, Tilemap groundTileMap, Tilemap obstaclesTilemap, EnemiesInRoomTracker enemiesInRoomTracker)
     {
         if (isSpawnRoom)
