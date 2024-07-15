@@ -210,17 +210,7 @@ MonoBehaviour:
   GameObjectToLoot: {fileID: 0}
   LootTable:
     ObjectsToLoot:
-    - Loot: {fileID: 1135282862314296, guid: 31967730f9b6ffc4f90155f86f7d5a87, type: 3}
-      Weight: 10
-      ChancePercentage: 0
-    - Loot: {fileID: 1302441342399442, guid: 04f829df7360de745be09823218e8aa7, type: 3}
-      Weight: 10
-      ChancePercentage: 0
-    - Loot: {fileID: 1801199070093102, guid: ba8cd2078826afb4483f9173abb1b46e, type: 3}
-      Weight: 10
-      ChancePercentage: 0
-    - Loot: {fileID: 9140274731206863875, guid: 0adba868bfc74684e99c2f41a5f10ff6,
-        type: 3}
+    - Loot: {fileID: 1218917270543614, guid: 770094b839092924b996fad8a7c23b15, type: 3}
       Weight: 10
       ChancePercentage: 0
     WeightsTotal: 0
@@ -311,9 +301,6 @@ MonoBehaviour:
       Weight: 10
       ChancePercentage: 0
     - Loot: {fileID: 1285005204474166, guid: 26615dc5bedcf8349b8dc80d84a1487b, type: 3}
-      Weight: 10
-      ChancePercentage: 0
-    - Loot: {fileID: 1592259332214950, guid: 17f3a99d3c23a6047ac3d789f9cca4b3, type: 3}
       Weight: 10
       ChancePercentage: 0
     WeightsTotal: 0

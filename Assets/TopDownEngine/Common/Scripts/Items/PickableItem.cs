@@ -3,6 +3,7 @@ using System.Collections;
 using MoreMountains.Tools;
 using MoreMountains.InventoryEngine;
 using MoreMountains.Feedbacks;
+using UnityEngine.Events;
 
 namespace MoreMountains.TopDownEngine
 {
@@ -86,7 +87,10 @@ namespace MoreMountains.TopDownEngine
 		protected ItemPicker _itemPicker = null;
 		protected WaitForSeconds _disableDelay;
 
-		protected virtual void Start()
+
+        public UnityEvent OnActivation;
+
+        protected virtual void Start()
 		{
 			_disableDelay = new WaitForSeconds(DisableDelay);
 			_collider = gameObject.GetComponent<Collider>();
@@ -95,15 +99,21 @@ namespace MoreMountains.TopDownEngine
 			PickedMMFeedbacks?.Initialization(this.gameObject);
 		}
 
-		/// <summary>
-		/// Triggered when something collides with the coin
-		/// </summary>
-		/// <param name="collider">Other.</param>
-		public virtual void OnTriggerEnter (Collider collider) 
+        public virtual void TriggerExitAction(GameObject collider)
+        {
+            
+        }
+        /// <summary>
+        /// Triggered when something collides with the coin
+        /// </summary>
+        /// <param name="collider">Other.</param>
+        public virtual void OnTriggerEnter (Collider collider) 
 		{
 			_collidingObject = collider.gameObject;
 			PickItem (collider.gameObject);
-		}
+
+            
+        }
 
 		/// <summary>
 		/// Triggered when something collides with the coin
@@ -113,7 +123,13 @@ namespace MoreMountains.TopDownEngine
 		{
 			_collidingObject = collider.gameObject;
 			PickItem (collider.gameObject);
-		}
+
+            if (OnActivation != null)
+            {
+                Debug.Log("WE CALED THE ON ACTIVATION EVENT");
+                OnActivation.Invoke();
+            }
+        }
 
 		/// <summary>
 		/// Check if the item is pickable and if yes, proceeds with triggering the effects and disabling the object

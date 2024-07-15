@@ -10,8 +10,10 @@ public class FireRate : MonoBehaviour
 
     public void IncreaseRateOfFire()
     {
+        Debug.Log("CALLED THE FUNCTION ON THE PLAYER");
         float timeBetweenUses = WeaponAttachment.transform.GetComponentInChildren<ProjectileWeapon>().TimeBetweenUses;
-
+        Debug.Log("new time between uses:" + timeBetweenUses * .5f);
         WeaponAttachment.transform.GetComponentInChildren<ProjectileWeapon>().TimeBetweenUses = timeBetweenUses * .5f;
+        Debug.Log("we updated time between uses:" + WeaponAttachment.transform.GetComponentInChildren<ProjectileWeapon>().TimeBetweenUses);
     }
 }
