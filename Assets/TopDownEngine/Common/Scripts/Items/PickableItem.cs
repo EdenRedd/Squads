@@ -111,8 +111,6 @@ namespace MoreMountains.TopDownEngine
 		{
 			_collidingObject = collider.gameObject;
 			PickItem (collider.gameObject);
-
-            
         }
 
 		/// <summary>
